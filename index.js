@@ -1,10 +1,21 @@
-function coinChange(coins, amount) {
-  const dp = new Array(amount + 1).fill(Infinity);
-  dp[0] = 0;
-  for (const coin of coins) {
-    for (let i = coin; i <= amount; i++) {
-      dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+function getPermutation(n, k) {
+  const nums = Array.from({ length: n }, (_, i) => i + 1);
+  let result = "";
+  let count = 0;
+  const backtrack = (current) => {
+    if (current.length === n) {
+      count++;
+      if (count === k) result = current.join("");
+      return;
     }
-  }
-  return dp[amount] === Infinity ? -1 : dp[amount];
+    if (count >= k) return;
+    for (const num of nums) {
+      if (current.includes(num)) continue;
+      current.push(num);
+      backtrack(current);
+      current.pop();
+    }
+  };
+  backtrack([]);
+  return result;
 }
