@@ -1,21 +1,20 @@
-function getPermutation(n, k) {
-  const nums = Array.from({ length: n }, (_, i) => i + 1);
-  let result = "";
-  let count = 0;
-  const backtrack = (current) => {
-    if (current.length === n) {
-      count++;
-      if (count === k) result = current.join("");
-      return;
+function detectCycle(head) {
+  let slow = head;
+  let fast = head;
+  let hasCycle = false;
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) {
+      hasCycle = true;
+      break;
     }
-    if (count >= k) return;
-    for (const num of nums) {
-      if (current.includes(num)) continue;
-      current.push(num);
-      backtrack(current);
-      current.pop();
-    }
-  };
-  backtrack([]);
-  return result;
+  }
+  if (!hasCycle) return null;
+  slow = head;
+  while (slow !== fast) {
+    slow = slow.next;
+    fast = fast.next;
+  }
+  return slow;
 }
